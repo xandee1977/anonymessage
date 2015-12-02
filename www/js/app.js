@@ -63,8 +63,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/comment/:id',
     views: {
       'menuContent': {
-        templateUrl: 'templates/comment.html',
-        controller: 'CommentCtrl'
+        templateUrl: 'templates/comments.html',
+        controller: 'CommentsCtrl'
       }
     }
   });
