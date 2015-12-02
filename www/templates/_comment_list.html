@@ -1,3 +1,5 @@
+<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+</ion-refresher>
 <ion-list>
   <ion-item ng-repeat="comment in comments" href="#/app/comment/{{comment.id}}" ng-hide="comments.length == 0">
     <div ng-if="comment.date">{{comment.date}} - {{comment.title}} ({{comment.num_comments}})</div>

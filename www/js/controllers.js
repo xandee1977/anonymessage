@@ -42,9 +42,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CommentsCtrl', function($scope, webService) {
-  $scope.parent_id = 0;
-  $scope.comments = [];
-  webService.getComments().then(function(response){
+  $scope.parent_id = 0;  
+  $scope.ws = webService;
+  $scope.ws.getComments().then(function(response){
+    $scope.comments = [];
     var list_itens = response.data.data;
     for(var i=0; i<list_itens.length; i++) {
       var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
@@ -53,23 +54,37 @@ angular.module('starter.controllers', [])
   });
 
   $scope.sendComment = function(comment) {
-    webService.saveComment(comment.text, $scope.parent_id).then(function(response){
+    $scope.ws.saveComment(comment.text, $scope.parent_id).then(function(response){
       //$scope.comment_data = response.data.data;
       var item_data = response.data.data;
-      var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent};
+      var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0};
       $scope.comments.unshift(item);
     });
   }
+
+  $scope.doRefresh = function() {
+    console.log("Fazendo o refresh");
+    $scope.ws.getComments().then(function(response){
+      $scope.comments = [];
+      var list_itens = response.data.data;
+      for(var i=0; i<list_itens.length; i++) {
+        var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+        $scope.comments.push(item);
+      }
+    });
+    $scope.$broadcast('scroll.refreshComplete');
+  };
 })
 
 .controller('CommentCtrl', function($scope, $stateParams, webService) {
-  $scope.comments = [];
-  $scope.ws = webService;
+  $scope.ws = webService;  
   $scope.ws.showComment($stateParams.id).then(function(response){
     $scope.comment_data = response.data.data;
     $scope.parent_id = response.data.data.id;
-    
-    $scope.ws.getComments(response.data.data.id).then(function(response){
+    //$scope.$apply();
+
+    $scope.ws.getComments($scope.parent_id).then(function(response){
+      $scope.comments = [];
       var list_itens = response.data.data;
       for(var i=0; i<list_itens.length; i++) {
         var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
@@ -80,12 +95,26 @@ angular.module('starter.controllers', [])
 
   $scope.sendComment = function(comment) {    
     console.log(comment);
-    webService.saveComment(comment.text, $scope.parent_id).then(function(response){
+    $scope.ws.saveComment(comment.text, $scope.parent_id).then(function(response){
       //$scope.comment_data = response.data.data;
       var item_data = response.data.data;
       var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0};
       $scope.comments.unshift(item);
     });
   }
+
+  $scope.doRefresh = function() {
+    console.log("Fazendo o refresh");
+    $scope.ws.getComments($scope.parent_id).then(function(response){
+      $scope.comments = [];
+      var list_itens = response.data.data;
+      for(var i=0; i<list_itens.length; i++) {
+        var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+        $scope.comments.push(item);
+      }
+    });
+    $scope.$broadcast('scroll.refreshComplete');
+    //$scope.$apply();
+  };
 
 });
