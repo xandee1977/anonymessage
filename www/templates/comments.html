@@ -1,9 +1,11 @@
 <ion-view view-title="Tópicos">
   <ion-content>
-  	<h2 style="text-align:center;">AnonyMessage</h2>    
+  
+  	<h2 style="text-align: center;background-color: #387EF5;color: white;padding: 10px;margin-bottom: 0px;">AnonyMessage</h2>    
     <p ng-if="comment_data" style="font-size:16pt; padding:10px; text-align:justify">{{ comment_data.text }}</p>
-    <p ng-if="comment_data" style="font-size:11pt; padding:10px; text-align:right">( {{ comment_data.date }} )</p>
+    <p ng-if="comment_data" style="font-size:11pt; padding:10px; text-align:left; color: lightgray">( {{ comment_data.date }} )</p>
     <div ng-include src="'templates/_comment_form.html'"></div>
     <div ng-include src="'templates/_comment_list.html'"></div>
+    
   </ion-content>
 </ion-view>

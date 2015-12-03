@@ -1,1 +1,19 @@
 /* Empty. Add your own CSS if you like */
+
+.comment-date{
+	color: lightgray;
+	font-size: 12px;
+}
+
+.comment-number{
+	color: lightgray;
+	font-size: 14px;
+}
+
+.comment-title{
+	font-size: 20px!important;
+}
+
+.fixed-form{
+	position: fixed;
+}
