@@ -1,19 +1,80 @@
 /* Empty. Add your own CSS if you like */
 
+/*DARK PRIMARY COLOR #512DA8*/
+/*primary color #673AB7*/
+
+
+.bar.bar-stable{
+	background-color: #512DA8;
+}
+
+.bar .buttons span, 
+.back-text, 
+.bar-stable .button.button-icon, 
+.bar.bar-stable .title,
+.ion-ios-arrow-back{
+	color: #FFFFFF;
+}
+
+.has-header{
+    background-color: #ddd;
+}
+
+
+
 .comment-date{
-	color: lightgray;
-	font-size: 12px;
+    font-size: 12px;
+    color: lightgray;
+    display: inline-block;
+    float: right;
+    margin: 0;
 }
 
 .comment-number{
-	color: lightgray;
-	font-size: 14px;
+    display: inline-block;
+    float: left;
+    
 }
 
 .comment-title{
 	font-size: 20px!important;
+	margin-bottom: 6px!important;
+	color: #673AB7!important;
 }
 
-.fixed-form{
-	position: fixed;
+.anony-comment{
+	background-color: white;
+	box-shadow: 1px 1px 10px -3px black;
 }
+
+.item-content{
+	white-space: none;
+}
+
+.item-complex .item-content, .item-radio .item-content{
+	padding: 12px;
+}
+.item-content p{
+	white-space: none;
+}
+
+.item-input{
+	margin: 8px;
+	border-radius: 30px;
+}
+	.btn-comment{
+		
+		width: 45px;
+		height: 45px;
+		border-radius: 90px;
+		margin-right: 5px;
+		padding: 0;
+		min-width: 45px;
+		min-height: 45px;
+		box-shadow: 1px 1px 10px -3px black!important;
+		border: none;
+		color: white;
+		font-weight: bolder;
+		background-color: #FF5722;
+	}
+
