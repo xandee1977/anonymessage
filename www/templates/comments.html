@@ -1,8 +1,7 @@
 <ion-view view-title="Tópicos">
-  <ion-content>
-  
-<!--   	<h2 style="text-align: center;background-color: #387EF5;color: white;padding: 10px;margin-bottom: 0px;">AnonyMessage</h2>     -->
-	<div class="anony-comment">
+  <ion-content on-scroll-complete="scrollFinish(scrollTop, scrollLeft)">  	
+  	<div ng-if="connected == 0" style="width:100%; padding:5px; background-color:#FF0000; color:#FFFFFF;text-align:center">offline</div>
+  	<div class="anony-comment">
 	    <p ng-if="comment_data" style="font-size:20px; color: gray; padding:10px; padding-bottom: 2px; margin-bottom: 10px;">{{ comment_data.text }}</p>
     	<p ng-if="comment_data" style="font-size:11pt; padding:10px; padding-top: 0px; text-align:left; color: gray">{{ comment_data.date }}</p>
 	</div>

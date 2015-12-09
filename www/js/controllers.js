@@ -43,11 +43,14 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CommentsCtrl', function($scope, $stateParams, webService) {
+  $scope.connected = 1;
+  $scope.scroll_position = 0;
+  $scope.comments = [];
+  $scope.start_position = 0;
   $scope.errors = [];
-  $scope.parent_id = 0;  
-  $scope.start_position = 0;  
+  $scope.parent_id = 0;
   $scope.ws = webService;
-  
+
   $scope.addLog = function(message) {
     if(typeof message == 'object') {
       for(var prop in message){
@@ -68,21 +71,31 @@ angular.module('starter.controllers', [])
   if($stateParams.id) {
     // Comentarios de um topico
     $scope.ws.showComment($stateParams.id).then(function(response){
+      $scope.connected = 1;
+      $scope.errors = []; // Clear log errors
       $scope.comment_data = response.data.data;
       $scope.parent_id = response.data.data.id;
       $scope.ws.getComments($scope.parent_id).then(function(response){
-        $scope.comments = [];
         var list_itens = response.data.data;
         for(var i=0; i<list_itens.length; i++) {
           var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
           $scope.comments.push(item);
         }
       });
-    });
+    },
+      function(data) {
+        // On error
+        if(data.status == 0) {
+          //$scope.addLog("Modo Offline");
+          $scope.connected = 0;
+        }
+      }
+    );
   } else {
     // Tópicos
-    $scope.ws.getComments().then(function(response){
-      $scope.comments = [];
+    $scope.ws.getComments(0, $scope.start_position).then(function(response){
+      $scope.connected = 1;
+      $scope.errors = []; // Clear log errors
       var list_itens = response.data.data;
       for(var i=0; i<list_itens.length; i++) {
         var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
@@ -90,7 +103,11 @@ angular.module('starter.controllers', [])
       }
     },
     function(data) {
-        $scope.addLog(data);
+        // On error
+        if(data.status == 0) {
+          //$scope.addLog("Modo Offline");
+          $scope.connected = 0;
+        }
     });    
   }
 
@@ -104,14 +121,58 @@ angular.module('starter.controllers', [])
   }
 
   $scope.doRefresh = function() {
-    $scope.ws.getComments($scope.parent_id).then(function(response){
-      $scope.comments = [];
-      var list_itens = response.data.data;
-      for(var i=0; i<list_itens.length; i++) {
-        var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
-        $scope.comments.push(item);
+    $scope.ws.getComments($scope.parent_id).then(
+      function(response){
+        $scope.connected = 1;
+        $scope.errors = []; // Clear log errors
+        $scope.comments = [];
+        var list_itens = response.data.data;
+        for(var i=0; i<list_itens.length; i++) {
+          var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+          $scope.comments.push(item);
+        }
+      },
+      function(data){
+        // On error
+        if(data.status == 0) {
+          //$scope.addLog("Modo Offline");
+          $scope.connected = 0;
+        }
       }
-    });
+    );
     $scope.$broadcast('scroll.refreshComplete');
-  };
+  }
+
+  $scope.scrollFinish = function(scrollTop, scrollLeft) {
+    /*
+    console.log('onScrollComplete');
+    console.log(scrollTop);
+    console.log(scrollLeft);
+    */
+    if(scrollTop > $scope.scroll_position) {      
+      $scope.ws.getComments(0, $scope.start_position).then(function(response){
+        $scope.connected = 1;
+        $scope.errors = []; // Clear log errors
+        var list_itens = response.data.data;        
+        if(list_itens[0].id != null) {
+          // Evita colocar itens vazios
+          for(var i=0; i<list_itens.length; i++) {            
+            var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+            $scope.comments.push(item);
+            $scope.start_position = $scope.start_position + 1;
+          }
+        }
+      },
+        function(data){
+          // On error
+          if(data.status == 0) {
+            //$scope.addLog("Modo Offline");
+            $scope.connected = 0;
+          }
+        }
+      );
+
+      $scope.scroll_position = scrollTop;
+    }    
+  };  
 });
