@@ -11,6 +11,7 @@ angular.module('starter.controllers', [])
 
   // Form data for the login modal
   $scope.loginData = {};
+  $scope.errors = [];
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -42,10 +43,28 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CommentsCtrl', function($scope, $stateParams, webService) {
+  $scope.errors = [];
   $scope.parent_id = 0;  
   $scope.start_position = 0;  
   $scope.ws = webService;
   
+  $scope.addLog = function(message) {
+    if(typeof message == 'object') {
+      for(var prop in message){
+        $scope.addLog("============");
+        $scope.addLog(prop);
+        $scope.addLog(message[prop]);
+        //var d = new Date();
+        //var log_item = String($scope.errors.length) + " - [ LOG ] " + d.toLocaleString() + " - " +String(message[prop]);
+        //$scope.errors.push(log_item);        
+      }
+    } else {
+      var d = new Date();
+      var log_item = String($scope.errors.length) + " - [ LOG ] " + d.toLocaleString() + " - " +String(message);
+      $scope.errors.push(log_item);
+    }
+  }
+
   if($stateParams.id) {
     // Comentarios de um topico
     $scope.ws.showComment($stateParams.id).then(function(response){
@@ -69,6 +88,9 @@ angular.module('starter.controllers', [])
         var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
         $scope.comments.push(item);
       }
+    },
+    function(data) {
+        $scope.addLog(data);
     });    
   }
 
@@ -82,7 +104,6 @@ angular.module('starter.controllers', [])
   }
 
   $scope.doRefresh = function() {
-    console.log("Fazendo o refresh");
     $scope.ws.getComments($scope.parent_id).then(function(response){
       $scope.comments = [];
       var list_itens = response.data.data;

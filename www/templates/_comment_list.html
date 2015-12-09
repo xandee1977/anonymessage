@@ -1,6 +1,14 @@
 <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
 </ion-refresher>
 <ion-list>
+  <ul style="color:#FF0000">
+	  <ion-item ng-repeat="error in errors">
+	    <li>{{error}}</li>
+	  </ion-item>
+	</ul>
+</ion-list>  
+
+<ion-list>
   <ion-item ng-repeat="comment in comments" href="#/app/comment/{{comment.id}}" ng-hide="comments.length == 0">
     <div ng-if="comment.date"><p class="comment-title">{{comment.title}}</p> <p class="comment-number">({{comment.num_comments}} comentários)</p></div>
     <div class="comment-date" ng-if="comment.date">{{comment.date}}</div>

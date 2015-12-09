@@ -76,11 +76,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   //var base_path = "http://localhost/ifeel-ws/";
   var base_path = "http://beecoapp.com/ws-ifeel/";
   return {
-    getComments: function(comment_id) {
+    getComments: function(comment_id) {      
       comment_id = typeof comment_id !== 'undefined' ? comment_id : 0;
       return $http.get(String(base_path) + "?service=comment&action=list&comment_id=" + String(comment_id));
     },
     showComment: function(comment_id) {        
+      console.log(comment_id);
       return $http.get(String(base_path) + "?service=comment&action=show&comment_id=" + String(comment_id));
     },
     saveComment: function(comment_text, comment_parent, comment_gcm) {
