@@ -72,7 +72,6 @@ angular.module('starter.controllers', [])
   if($stateParams.id) {
     // Comentarios de um topico
     $scope.ws.showComment($stateParams.id).then(function(response){
-      console.log(response.data.data.parent_list);
       $scope.parents = response.data.data.parent_list;
       $scope.connected = 1;
       $scope.errors = []; // Clear log errors
