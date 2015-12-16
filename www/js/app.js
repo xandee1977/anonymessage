@@ -68,6 +68,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       }
     }
   });
+  
+  var locale = window.navigator.language || window.navigator.userLanguage; 
+  if (locale === 'pt-BR') {
+    lang = 'pt';
+  } else {
+    lang = 'en';
+  }
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/comments');
 
@@ -89,8 +97,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       COMMENTS: "comentários",
   });
   
-  $translateProvider.preferredLanguage("en");
-  $translateProvider.fallbackLanguage("en");  
+  $translateProvider.preferredLanguage(lang);
+  $translateProvider.fallbackLanguage(lang);  
 })
 
 .factory('webService', function($http) {
