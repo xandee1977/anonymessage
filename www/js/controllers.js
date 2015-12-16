@@ -118,6 +118,8 @@ angular.module('starter.controllers', [])
       //$scope.comment_data = response.data.data;
       var item_data = response.data.data;
       var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0};
+      
+      document.getElementById("comment_text").value = ''; // Cleaning the field
       $scope.comments.unshift(item);
     });
   }

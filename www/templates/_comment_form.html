@@ -1,11 +1,11 @@
 <form ng-if="connected == 1" ng-submit="sendComment(comment)">
     <div class="form">
       <label class="item item-input">
-        <input type="text" placeholder="O que você gostaria de comentar?" id="comment_text" ng-model="comment.text">
+        <input type="text" placeholder="{{ 'MSG_PLACEHOLDER' | translate }}" id="comment_text" ng-model="comment.text">
       	<button type="submit" class="button btn-comment">></button>
       </label>
     </div>
 </form>
 <div ng-if="connected == 0">
-	<p class="comment-title">Sem conexão.</p>
+	<p class="comment-title">{{ 'NO_CONNECTION' | translate }}</p>
 </div>

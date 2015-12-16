@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.translate'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
   $stateProvider
 
     .state('app', {
@@ -70,6 +70,27 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/comments');
+
+  // Translation
+  $translateProvider.translations('en', {
+      TITLE: "Messages",
+      VERIFY_CONNECTION: "Please, verify your internet connection.",
+      MSG_PLACEHOLDER: "Write whatever that comes to your mind.",
+      NO_CONNECTION: "No connection.",
+      TOPICS: "Tópics",
+      COMMENTS: "comments",
+  });
+  $translateProvider.translations('pt', {
+      TITLE: "Mensagens",
+      VERIFY_CONNECTION: "Por favor, verifique sua conexão de internet.",
+      MSG_PLACEHOLDER: "Escreva o que quiser aqui.",
+      NO_CONNECTION: "Sem conexão.",
+      TOPICS: "Tópicos",
+      COMMENTS: "comentários",
+  });
+  
+  $translateProvider.preferredLanguage("en");
+  $translateProvider.fallbackLanguage("en");  
 })
 
 .factory('webService', function($http) {
