@@ -87,6 +87,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       NO_CONNECTION: "No connection.",
       TOPICS: "Tópics",
       COMMENTS: "comments",
+      PULL_REFRESH: "Pull to refresh.",
   });
   $translateProvider.translations('pt', {
       TITLE: "Mensagens",
@@ -95,6 +96,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       NO_CONNECTION: "Sem conexão.",
       TOPICS: "Tópicos",
       COMMENTS: "comentários",
+      PULL_REFRESH: "Puxe para atualizar.",
   });
   
   $translateProvider.preferredLanguage(lang);
