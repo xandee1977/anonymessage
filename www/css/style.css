@@ -6,6 +6,7 @@
 
 .bar.bar-stable{
 	background-color: #512DA8;
+	border-color: #512DA8;
 }
 
 .bar .buttons span, 
@@ -78,3 +79,37 @@
 		background-color: #FF5722;
 	}
 
+
+.breadcrumb{
+	background-color: #512DA8;
+	width: 100%;
+	padding: 10px;
+
+}
+
+.breadcrumb li{
+	display: inline-block;
+    height: 30px;
+    margin: 2px;
+
+}
+
+.breadcrumb a{
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    padding: 4px;
+    background-color: purple;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.breadcrumb p{
+	display: inline-block;
+    padding-left: 4px;
+    border-radius: 10px;
+    margin: 0;
+    color: white;
+    font-weight: bolder;
+    
+}
