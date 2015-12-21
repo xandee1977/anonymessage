@@ -100,7 +100,7 @@ angular.module('starter.controllers', [])
       $scope.errors = []; // Clear log errors
       var list_itens = response.data.data;
       for(var i=0; i<list_itens.length; i++) {
-        var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+        var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments, country: list_itens[i].country, city: list_itens[i].city};
         $scope.comments.push(item);
       }
     },
@@ -132,7 +132,7 @@ angular.module('starter.controllers', [])
         $scope.comments = [];
         var list_itens = response.data.data;
         for(var i=0; i<list_itens.length; i++) {
-          var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+          var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments, country: list_itens[i].country, city: list_itens[i].city};
           $scope.comments.push(item);
         }
       },
@@ -161,7 +161,7 @@ angular.module('starter.controllers', [])
         if(list_itens[0].id != null) {
           // Evita colocar itens vazios
           for(var i=0; i<list_itens.length; i++) {            
-            var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+            var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments, country: list_itens[i].country, city: list_itens[i].city};
             $scope.comments.push(item);
             $scope.start_position = $scope.start_position + 1;
           }
