@@ -1,6 +1,9 @@
 <ion-view view-title="{{ 'TITLE' | translate }}">
   <ion-content on-scroll-complete="scrollFinish(scrollTop, scrollLeft)">  	
-  	<div ng-if="connected == 0" style="width:100%; padding:5px; background-color:#FF0000; color:#FFFFFF;text-align:center">{{ 'VERIFY_CONNECTION' | translate }}</div>
+    <ion-refresher pulling-text="{{ 'PULL_REFRESH' | translate }}" on-refresh="doRefresh()">
+    </ion-refresher>  	
+
+    <div ng-if="connected == 0" style="width:100%; padding:5px; background-color:#FF0000; color:#FFFFFF;text-align:center">{{ 'VERIFY_CONNECTION' | translate }}</div>
     <div class="breadcrumb" ng-include src="'templates/_breadcrumb_list.html'"></div>
   	<div class="anony-comment">
 	    <p ng-if="comment_data" style="font-size:20px; color: gray; padding:10px; padding-bottom: 2px; margin-bottom: 10px;">{{ comment_data.text }}</p>

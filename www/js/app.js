@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.translate'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'pascalprecht.translate'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -19,10 +19,41 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    //Google Cloud Message
+    var io = Ionic.io();
+    var push = new Ionic.Push({
+      "onNotification": function(notification) {
+        alert('Received push notification!');
+      },
+      "pluginConfig": {
+        "android": {
+          "iconColor": "#0000FF"
+        }
+      }
+    });
+    var user = Ionic.User.current();
+    
+    if (!user.id) {
+      user.id = Ionic.User.anonymousId();
+    }
+    
+    // Just add some dummy data..
+    user.set('name', 'Simon');
+    user.set('bio', 'This is my little bio');
+    user.save();
+   
+    var callback = function(data) {
+      window.gcm_id = data._token;
+      console.log(gcm_id);
+      push.addTokenToUser(user);
+      user.save();
+    };
+    push.register(callback);
   });
 })
-
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+  $translateProvider.useSanitizeValueStrategy('sanitize');
   $stateProvider
 
     .state('app', {
@@ -111,21 +142,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'pascalprecht.transla
       comment_id = typeof comment_id !== 'undefined' ? comment_id : 0;
       start = typeof start !== 'undefined' ? start : 0;
       limit = typeof limit !== 'undefined' ? limit : 20;
-
-      return $http.get(String(base_path) + "?service=comment&action=list&comment_id=" + String(comment_id) + "&start=" + String(start) + "&limit=" + String(limit));
+      var url = String(base_path) + "?service=comment&action=list&comment_id=" + String(comment_id) + "&start=" + String(start) + "&limit=" + String(limit);
+      // Adding gcm_id information
+      if(window.gcm_id) {
+        url = url + "&gcm_id=" + String(window.gcm_id);
+      }
+      return $http.get(url);
     },
     showComment: function(comment_id) {        
       console.log(comment_id);
-      return $http.get(String(base_path) + "?service=comment&action=show&comment_id=" + String(comment_id));
+      var url = String(base_path) + "?service=comment&action=show&comment_id=" + String(comment_id);
+      // Adding gcm_id information
+      if(window.gcm_id) {
+        url = url + "&gcm_id=" + String(window.gcm_id);
+      }     
+      return $http.get(url);
     },
     saveComment: function(comment_text, comment_parent, comment_gcm) {
       console.log(comment_parent);
       // default values
       comment_parent = typeof comment_parent !== 'undefined' ? comment_parent : 0;
       comment_gcm = typeof comment_gcm !== 'undefined' ? comment_gcm : null;
-
+      var url = String(base_path) + "?service=comment&action=save";
+      // Adding gcm_id information
+      if(window.gcm_id) {
+        url = url + "&gcm_id=" + String(window.gcm_id);
+      }
       return $http.post(
-        String(base_path) + "?service=comment&action=save", 
+        url, 
         {text : comment_text, parent: comment_parent, gcm: comment_gcm}
       );
     }
