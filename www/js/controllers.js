@@ -80,7 +80,7 @@ angular.module('starter.controllers', [])
       $scope.ws.getComments($scope.parent_id).then(function(response){
         var list_itens = response.data.data;
         for(var i=0; i<list_itens.length; i++) {
-          var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments};
+          var item = { title: list_itens[i].text, id: list_itens[i].id, date: list_itens[i].date, num_comments: list_itens[i].num_comments, country: list_itens[i].country, city: list_itens[i].city};
           $scope.comments.push(item);
         }
       });
@@ -117,7 +117,7 @@ angular.module('starter.controllers', [])
     $scope.ws.saveComment(comment.text, $scope.parent_id).then(function(response){
       //$scope.comment_data = response.data.data;
       var item_data = response.data.data;
-      var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0};
+      var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0, country: item_data.country, city: item_data.city};
       
       document.getElementById("comment_text").value = ''; // Cleaning the field
       $scope.comments.unshift(item);
