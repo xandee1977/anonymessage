@@ -43,6 +43,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CommentsCtrl', function($scope, $stateParams, webService) {
+  $scope.gcm_id = window.gcm_id;
   $scope.parents = [];
   $scope.connected = 1;
   $scope.scroll_position = 0;
@@ -67,7 +68,7 @@ angular.module('starter.controllers', [])
       var log_item = String($scope.errors.length) + " - [ LOG ] " + d.toLocaleString() + " - " +String(message);
       $scope.errors.push(log_item);
     }
-  }
+  }  
 
   if($stateParams.id) {
     // Comentarios de um topico
@@ -115,11 +116,12 @@ angular.module('starter.controllers', [])
 
   $scope.sendComment = function(comment) {
     $scope.ws.saveComment(comment.text, $scope.parent_id).then(function(response){
+      document.getElementById("comment_text").value = ''; // Cleaning the field
+      
       //$scope.comment_data = response.data.data;
       var item_data = response.data.data;
       var item = { title: item_data.text, id: item_data.id, date: item_data.date, parent: item_data.parent, num_comments: 0, country: item_data.country, city: item_data.city};
       
-      document.getElementById("comment_text").value = ''; // Cleaning the field
       $scope.comments.unshift(item);
     });
   }

@@ -32,28 +32,17 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         }
       }
     });
-    var user = Ionic.User.current();
-    
-    if (!user.id) {
-      user.id = Ionic.User.anonymousId();
-    }
-    
-    // Just add some dummy data..
-    user.set('name', 'Simon');
-    user.set('bio', 'This is my little bio');
-    user.save();
-   
-    var callback = function(data) {
-      window.gcm_id = data._token;
-      console.log(gcm_id);
+
+    push.register(function(data) {
+      window.gcm_id = data.token;
+      console.log(window.gcm_id);
       push.addTokenToUser(user);
       user.save();
-    };
-    push.register(callback);
+    });
   });
 })
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-  $translateProvider.useSanitizeValueStrategy('sanitize');
+  $translateProvider.useSanitizeValueStrategy('escape');
   $stateProvider
 
     .state('app', {
